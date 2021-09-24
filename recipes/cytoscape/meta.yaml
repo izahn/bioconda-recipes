@@ -1,18 +1,19 @@
 {% set name = "cytoscape" %}
 {% set version = "3.8.2" %}
-{% set sha256 = "e1c7985a613db4c5006efdaa16a80126b15355dedd0abcf31b26555d9a2eaa99" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://github.com/cytoscape/cytoscape/releases/download/{{ version }}/Cytoscape_{{ version|replace(".","_") }}_unix.sh
-  sha256: {{ sha256 }}
+  url: https://github.com/cytoscape/cytoscape/releases/download/{{ version }}/cytoscape-unix-{{ version }}.tar.gz
+  sha256: 1cfd9385236dfd14bb380a930c9a2303d46c4216671cf7ae49b86e6f71c2fa7d
+  patches:
+    - fix-paths.patch
 
 build:
   number: 0
-  noarch: generic
+  skip: true  # [not linux]
 
 requirements:
   build:
@@ -31,7 +32,7 @@ requirements:
 
 test:
   commands:
-    - "cytoscape.sh -v"
+    - "cytoscape -v"
 
 about:
   home: https://cytoscape.org
@@ -42,6 +43,5 @@ about:
   dev_url: https://github.com/cytoscape/cytoscape
 
 extra:
-  identifiers:
-    - biotools:cytoscape
-    - doi:10.1101/gr.1239303
+  recipe-maintainers:
+    - izahn
